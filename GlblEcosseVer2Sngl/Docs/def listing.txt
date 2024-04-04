@@ -1,0 +1,112 @@
+common_componentsGUI.py:31:def calculate_grid_cell(form, granularity):
+common_componentsGUI.py:59:def commonSection(form,grid):
+common_componentsGUI.py:242:def grid_coarseness(form, grid):
+common_componentsGUI.py:272:def saveClicked(form):
+common_componentsGUI.py:278:def exitClicked(form, write_config_flag = True):
+common_componentsGUI.py:298:def changeConfigFile(form):
+common_componentsGUI.py:315:def studyTextChanged(form):
+
+common_sngl_cmpntsGUI.py:24:def commonSection(form,grid):
+common_sngl_cmpntsGUI.py:173:def saveClicked(form):
+common_sngl_cmpntsGUI.py:179:def exitClicked(form, write_config_flag = True):
+common_sngl_cmpntsGUI.py:199:def changeConfigFile(form):
+common_sngl_cmpntsGUI.py:216:def studyTextChanged(form):
+
+glbl_ecsse_high_level_fns.py:10:#       def _generate_ecosse_files(form, climgen, num_band)
+glbl_ecsse_high_level_fns.py:11:#       def generate_banded_sims(form)
+glbl_ecsse_high_level_fns.py:35:def _simplify_soil_recs(soil_recs, use_dom_soil_flag):
+glbl_ecsse_high_level_fns.py:100:def _simplify_aoi(aoi_res):
+glbl_ecsse_high_level_fns.py:123:def _generate_ecosse_files(form, climgen, yield_df, num_band, yield_defn, pi_var):
+glbl_ecsse_high_level_fns.py:268:def generate_banded_sims(form):
+
+glbl_ecsse_sngl_high_level_fns.py:10:#       def generate_simulation_files(form)
+glbl_ecsse_sngl_high_level_fns.py:26:def generate_simulation_files(form):
+
+GlblEcsseHwsdGUI.py:34:    def __init__(self, parent=None):
+GlblEcsseHwsdGUI.py:254:    def weatherResourceChanged(self):
+GlblEcsseHwsdGUI.py:258:    def fetchCsvFile(self):
+GlblEcsseHwsdGUI.py:272:    def fetchLuPiJsonFile(self):
+GlblEcsseHwsdGUI.py:282:    def resolutionChanged(self):
+GlblEcsseHwsdGUI.py:287:    def studyTextChanged(self):
+GlblEcsseHwsdGUI.py:291:    def bboxTextChanged(self):
+GlblEcsseHwsdGUI.py:302:    def createSimsClicked(self):
+GlblEcsseHwsdGUI.py:321:    def runEcosseClicked(self):
+GlblEcsseHwsdGUI.py:332:    def saveClicked(self):
+GlblEcsseHwsdGUI.py:348:    def cancelClicked(self):
+GlblEcsseHwsdGUI.py:354:    def exitClicked(self):
+GlblEcsseHwsdGUI.py:369:    def changeConfigFile(self):
+GlblEcsseHwsdGUI.py:375:    def fetchPiNcFile(self):
+GlblEcsseHwsdGUI.py:386:def main():
+
+GlEcSnglLtdDataGUI.py:31:    def __init__(self, parent=None):
+GlEcSnglLtdDataGUI.py:202:    def genWthrSheetsClicked(self):
+GlEcSnglLtdDataGUI.py:206:    def weatherResourceChanged(self):
+GlEcSnglLtdDataGUI.py:210:    def fetchLuPiJsonFile(self):
+GlEcSnglLtdDataGUI.py:220:    def fetchCoordsFile(self):
+GlEcSnglLtdDataGUI.py:229:    def studyTextChanged(self):
+GlEcSnglLtdDataGUI.py:233:    def createSimsClicked(self):
+GlEcSnglLtdDataGUI.py:247:    def runEcosseClicked(self):
+GlEcSnglLtdDataGUI.py:260:    def cancelClicked(self):
+GlEcSnglLtdDataGUI.py:266:    def exitClicked(self):
+GlEcSnglLtdDataGUI.py:272:    def changeConfigFile(self):
+GlEcSnglLtdDataGUI.py:278:    def removeProjectClicked(self):
+GlEcSnglLtdDataGUI.py:283:    def saveClicked(self):
+GlEcSnglLtdDataGUI.py:300:def main():
+
+initialise_common_funcs.py:31:def build_and_display_studies(form):
+initialise_common_funcs.py:55:def initiation(form):
+initialise_common_funcs.py:119:def check_nc_start_end_dates(nc_fname, time_var_name = 'time', cru_future_flag = False):
+initialise_common_funcs.py:147:def _read_setup_file(form, fname_setup):
+initialise_common_funcs.py:297:def write_default_setup_file(setup_file):
+initialise_common_funcs.py:354:def write_default_config_file(config_file):
+initialise_common_funcs.py:386:def check_lu_pi_json_fname(form):
+initialise_common_funcs.py:462:def write_runsites_config_file(form):
+initialise_common_funcs.py:486:def check_sims_dir(form):
+
+initialise_funcs.py:40:def _write_default_config_file(config_file):
+initialise_funcs.py:72:def read_config_file(form):
+initialise_funcs.py:206:def write_config_file(form, message_flag = True):
+initialise_funcs.py:277:def write_study_definition_file(form):
+initialise_funcs.py:282:    # do not write study def file
+
+initialise_sngl_funcs.py:31:def read_config_file(form):
+initialise_sngl_funcs.py:130:def write_config_file(form, message_flag = True):
+initialise_sngl_funcs.py:198:def write_study_definition_file(form):
+initialise_sngl_funcs.py:203:    # do not write study def file
+
+make_ltd_data_files.py:22:    def __init__(self, c, bulk_dens, ph, clay_pc, silt_pc, sand_pc, no_data=NoData):
+make_ltd_data_files.py:33:    def validate(self):
+make_ltd_data_files.py:50:    def __init__(self, form,  climgen, comments=True, spacer_len=12, no_data = -999):
+make_ltd_data_files.py:143:    def add_lyr(self, lut_name, c_content, bulk_density, ph, clay_pc,
+make_ltd_data_files.py:149:    def del_lyrs(self):
+make_ltd_data_files.py:155:    def line(self, data, comment):
+make_ltd_data_files.py:160:    def validate(self):
+make_ltd_data_files.py:198:    def write(self, sim_dir, soil, latitude, hist_weather_recs, met_rel_path, input_fname='input.txt'):
+
+mngmnt_fns_and_class.py:25:def create_proj_data_defns(project_path, crop_name, req_resol_deg):
+mngmnt_fns_and_class.py:85:def open_proj_NC_sets(mask_defn, yield_defn, dates_defn, fert_defns):
+mngmnt_fns_and_class.py:96:def close_proj_NC_sets(mask_defn, yield_defn, dates_defn, fert_defns):
+mngmnt_fns_and_class.py:108:    def __init__(self, nc_fname, resource):
+mngmnt_fns_and_class.py:198:    def get_nc_coords(self, latitude, longitude):
+
+orator_wthr.py:33:def _write_block(strt_irow, wsht, nyears, year_list, met_list):
+orator_wthr.py:54:def generate_orator_wthr(form):
+orator_wthr.py:124:def _fetch_coordinates(coords_xls):
+
+plant_input_fns.py:24:def check_plant_input_nc(form, pi_nc_fname):
+plant_input_fns.py:56:def associate_yield_nc(logger_info, latitude, longitude, ltd_data, yield_defn, yield_dset, pi_var,
+plant_input_fns.py:81:def fetch_yields(form):
+plant_input_fns.py:116:def associate_yield(logger_info, latitude, longitude, ltd_data, yield_frame):
+
+prepare_ecosse_files.py:28:def _weather_for_simulation(amma_2050_allowed_gcms, weather_sets, climgen, pettmp_hist, pettmp_fut):
+prepare_ecosse_files.py:74:def input_txt_line_layout(data, comment):
+prepare_ecosse_files.py:80:def write_line_summary(form, coord_frst, coord_last, max_cells_in_line, max_cells_in_cluster):
+prepare_ecosse_files.py:94:def write_study_manifest_files(form, lon_lats):
+prepare_ecosse_files.py:122:def write_manifest_file(form, fut_clim_scen, sim_dir, soil_list, mu_global, latitude, longitude, area):
+prepare_ecosse_files.py:161:def write_signature_file(lgr, sim_dir, mu_global, soil, latitude, longitude, province = '', bad_val = 0):
+prepare_ecosse_files.py:200:def write_kml_file(lgr, output, sim_dir, fname_short, mu_global, latitude, longitude):
+prepare_ecosse_files.py:237:def update_progress(last_time, start_time, completed, est_num_sims, skipped, warning_count):
+prepare_ecosse_files.py:251:def _make_met_files(clim_dir, latitude, climgen, pettmp_grid_cell):
+prepare_ecosse_files.py:309:def make_ecosse_file(form, climgen, ltd_data, kml_output, site_rec, province, pettmp_grid_cell):
+
+validate.py:21:    def __init__(self, form, clim):
