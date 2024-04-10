@@ -28,6 +28,7 @@ from weather_datasets import change_weather_resource
 from glbl_ecsse_wthr_only_sngl_fns import generate_weather_only, write_cnvrt_tiffs_to_nc_script
 from orator_wthr import generate_orator_wthr
 from cvrtcoord import WGS84toOSGB36
+from hwsd2_test import test_hwsd2_db
 
 STD_FLD_SIZE_60 = 60
 STD_FLD_SIZE_80 = 80
@@ -187,6 +188,13 @@ class Form(QWidget):
         grid.addWidget(w_run_ecosse, irow, 1)
         self.w_run_ecosse = w_run_ecosse
 
+        w_hwsd2 = QPushButton("Test HWSD2")
+        helpText = 'Option to test HWSD2'
+        w_hwsd2.setToolTip(helpText)
+        w_hwsd2.setFixedWidth(STD_FLD_SIZE_100)
+        grid.addWidget(w_hwsd2, irow, 2)
+        w_hwsd2.clicked.connect(self.testHwsd2Clicked)
+
         w_save = QPushButton("Save")
         helpText = 'Save configuration and study definition files'
         w_save.setToolTip(helpText)
@@ -260,16 +268,34 @@ class Form(QWidget):
         read_config_file(self)
         self.combo10w.currentIndexChanged[str].connect(self.weatherResourceChanged)
 
-    def convertGeoTiffs(self):
+    def testHwsd2Clicked(self):
+        """
 
+        """
+        study = self.w_study.text()
+        if study == '':
+            print('study cannot be blank')
+            return
+
+        self.study = study
+        test_hwsd2_db(self)
+
+    def convertGeoTiffs(self):
+        """
+
+        """
         write_cnvrt_tiffs_to_nc_script(self)
 
     def genCsvWthrClicked(self):
+        """
 
+        """
         generate_weather_only(self)
 
     def dsplyLatLon2Gran(self):
+        """
 
+        """
         lat, lon = 2*[-999]
         try:
             gran_lat = int(self.w_gran_lat.text())
@@ -327,11 +353,15 @@ class Form(QWidget):
         self.lbl06.setText(mess)
 
     def genWthrSheetsClicked(self):
+        """
 
+        """
         generate_orator_wthr(self)
 
     def weatherResourceChanged(self):
+        """
 
+        """
         change_weather_resource(self)
 
     def fetchLuPiJsonFile(self):
@@ -354,12 +384,15 @@ class Form(QWidget):
             self.w_lbl16.setText(fname)
 
     def studyTextChanged(self):
+        """
 
+        """
         studyTextChanged(self)
 
     def createSimsClicked(self):
+        """
 
-        func_name = __prog__ + ' createSimsClicked'
+        """
         study = self.w_study.text()
         if study == '':
             print('study cannot be blank')
@@ -372,11 +405,9 @@ class Form(QWidget):
             write_config_file(self, message_flag=False)
 
     def runEcosseClicked(self):
-
-        func_name = __prog__ + ' runEcosse'
-
-        # components of the command string have been checked at startup
-        # =============================================================
+        """
+        components of the command string have been checked at startup
+        """
         if write_runsites_config_file(self):
 
             # run the make simulations script
@@ -385,34 +416,34 @@ class Form(QWidget):
             os.system(cmd_str)
 
     def cancelClicked(self):
+        """
 
-        func_name = __prog__ + ' cancelClicked'
-
+        """
         exitClicked(self, write_config_flag=False)
 
     def exitClicked(self):
-        '''
+        """
         exit cleanly
-        '''
+        """
         exitClicked(self)
 
     def changeConfigFile(self):
-        '''
+        """
         permits change of configuration file
-        '''
+        """
         changeConfigFile(self)
 
     def removeProjectClicked(self):
+        """
 
+        """
         # remove_project(self)
         print('TODO: Not yet activated')
 
     def saveClicked(self):
-
-        func_name = __prog__ + ' saveClicked'
-
-        # check for spaces
-        # ================
+        """
+        check for spaces
+        """
         study = self.w_study.text()
         if study == '':
             print('study cannot be blank')
@@ -422,7 +453,6 @@ class Form(QWidget):
             else:
                 saveClicked(self)
                 build_and_display_studies(self)
-
 
 def main():
     """
