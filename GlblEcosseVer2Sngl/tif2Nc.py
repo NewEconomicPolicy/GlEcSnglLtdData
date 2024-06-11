@@ -23,8 +23,8 @@ def _cnvrt_tif_elev_nc():
     requires gdal module:
         from osgeo import gdal
     '''
-    base_dir = 'E:\\Faith Sadiq\\elev_tif'
-    out_dir = 'E:\\Faith Sadiq\\elev_nc'
+    base_dir = 'E:\\Faith_Sadiq\\elev_tif'
+    out_dir = 'E:\\Faith_Sadiq\\elev_nc'
 
     tif_fn = join(base_dir, 'extract_dem' + '.tif')
     if isfile(tif_fn):
