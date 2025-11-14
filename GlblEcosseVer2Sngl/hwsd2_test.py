@@ -15,18 +15,19 @@ __prog__ = 'hwsd2_test.py'
 __version__ = '0.0.1'
 __author__ = 's03mm5'
 
-import hwsd_bil_v2
+from pyodbc import connect, drivers
+from os.path import join, isdir, isfile, split, splitext, exists, basename, splitdrive
 
-from hwsd_bil_v2 import check_hwsd_integrity
+from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_cursor, get_soil_recs
 
 HWSD_DIR = 'E:\\HWSD_V2'
+
+ERROR_STR = '*** Error *** '
 
 def test_hwsd2_db(form):
     """
     called from GUI - generates ECOSSE simulation files for one site
     """
-    func_name =  __prog__ + ' generate_simulation_files'
-
     check_hwsd_integrity(HWSD_DIR)
     snglPntFlag = True
 
@@ -46,7 +47,7 @@ def test_hwsd2_db(form):
 
     # extract required values from the HWSD database
     # ==============================================
-    hwsd = hwsd_bil_v2.HWSD_bil(form.lgr, HWSD_DIR)
+    hwsd = HWSD_bil(form.lgr, HWSD_DIR)
     nvals_read = hwsd.read_bbox_mu_globals([lon_ur, lat_ur], snglPntFlag)
 
     # retrieve dictionary mu_globals and number of occurrences
@@ -56,15 +57,21 @@ def test_hwsd2_db(form):
         print('No soil records for this area\n')
         return
 
+    # Accesss database
+    # ================
+    cursor = fetch_accesss_cursor(HWSD_DIR)
+    if cursor is None:
+        return
+
     # create and instantiate a new class NB this stanza enables single site
     # ==================================
     form.hwsd_mu_globals = type('test', (), {})()
-    # form.hwsd_mu_globals.soil_recs = hwsd.get_soil_recs(sorted(mu_globals.keys()))
-    form.hwsd_mu_globals.soil_recs = hwsd.get_soil_recs(mu_globals)
-    if len(mu_globals) == 0:
+    soil_recs = get_soil_recs(cursor, mu_globals)
+    if len(soil_recs) == 0:
         print('No soil data for this area\n')
         return
 
+    form.hwsd_mu_globals.soil_recs = soil_recs
     mu_globals_props = {next(iter(mu_globals)): 1.0}
 
     mess = 'Retrieved {} values  of HWSD grid consisting of {} rows and {} columns: ' \
