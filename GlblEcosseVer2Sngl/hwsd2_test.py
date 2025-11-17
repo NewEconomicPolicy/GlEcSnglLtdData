@@ -57,6 +57,8 @@ def test_hwsd2_db(form):
         print('No soil records for this area\n')
         return
 
+    mu_globals = {3861: 1}
+
     # Accesss database
     # ================
     cursor = fetch_accesss_cursor(HWSD_DIR)
