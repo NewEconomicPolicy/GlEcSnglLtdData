@@ -18,7 +18,7 @@ __author__ = 's03mm5'
 from pyodbc import connect, drivers
 from os.path import join, isdir, isfile, split, splitext, exists, basename, splitdrive
 
-from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_cursor, get_soil_recs
+from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_cursor, get_soil_recs, fetch_metadata
 
 HWSD_DIR = 'E:\\HWSD_V2'
 
@@ -59,11 +59,13 @@ def test_hwsd2_db(form):
 
     mu_globals = {3861: 1}
 
-    # Accesss database
-    # ================
+    # Access database
+    # ===============
     cursor = fetch_accesss_cursor(HWSD_DIR)
     if cursor is None:
         return
+
+    fetch_metadata(cursor)
 
     # create and instantiate a new class NB this stanza enables single site
     # ==================================
@@ -71,15 +73,16 @@ def test_hwsd2_db(form):
     soil_recs = get_soil_recs(cursor, mu_globals)
     if len(soil_recs) == 0:
         print('No soil data for this area\n')
-        return
+    else:
+        form.hwsd_mu_globals.soil_recs = soil_recs
+        mu_globals_props = {next(iter(mu_globals)): 1.0}
 
-    form.hwsd_mu_globals.soil_recs = soil_recs
-    mu_globals_props = {next(iter(mu_globals)): 1.0}
+        mess = 'Retrieved {} values  of HWSD grid consisting of {} rows and {} columns: '
+        mess += '\n\tnumber of unique mu_globals: {}'.format(nvals_read, hwsd.nlats, hwsd.nlons, len(mu_globals))
+        form.lgr.info(mess);
+        print(mess)
 
-    mess = 'Retrieved {} values  of HWSD grid consisting of {} rows and {} columns: ' \
-           '\n\tnumber of unique mu_globals: {}'.format(nvals_read, hwsd.nlats, hwsd.nlons, len(mu_globals))
-    form.lgr.info(mess);
-    print(mess)
+    cursor.close()
 
     return
 
