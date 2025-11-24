@@ -18,7 +18,7 @@ __author__ = 's03mm5'
 from pyodbc import connect, drivers
 from os.path import join, isdir, isfile, split, splitext, exists, basename, splitdrive
 
-from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_cursor, get_soil_recs, fetch_metadata
+from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_conn, get_soil_recs, fetch_metadata
 
 HWSD_DIR = 'E:\\HWSD_V2'
 
@@ -61,11 +61,11 @@ def test_hwsd2_db(form):
 
     # Access database
     # ===============
-    cursor = fetch_accesss_cursor(HWSD_DIR)
+    conn, cursor = fetch_accesss_conn(HWSD_DIR)
     if cursor is None:
         return
 
-    fetch_metadata(cursor)
+    recs_lyrs, recs_smu = fetch_metadata(cursor)
 
     # create and instantiate a new class NB this stanza enables single site
     # ==================================
@@ -79,7 +79,7 @@ def test_hwsd2_db(form):
 
         mess = 'Retrieved {} values  of HWSD grid consisting of {} rows and {} columns: '
         mess += '\n\tnumber of unique mu_globals: {}'.format(nvals_read, hwsd.nlats, hwsd.nlons, len(mu_globals))
-        form.lgr.info(mess);
+        form.lgr.info(mess)
         print(mess)
 
     cursor.close()
