@@ -70,7 +70,7 @@ def test_hwsd2_db(form):
     # create and instantiate a new class NB this stanza enables single site
     # ==================================
     form.hwsd_mu_globals = type('test', (), {})()
-    soil_recs = get_soil_recs(cursor, mu_globals)
+    soil_recs = get_soil_recs(conn, cursor, mu_globals)
     if len(soil_recs) == 0:
         print('No soil data for this area\n')
     else:
