@@ -464,6 +464,5 @@ def main():
     form.show()  # paint form
     sys.exit(app.exec_())  # start event loop
 
-
 if __name__ == '__main__':
     main()

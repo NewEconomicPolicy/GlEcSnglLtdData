@@ -28,7 +28,9 @@ def test_hwsd2_db(form):
     """
     called from GUI - generates ECOSSE simulation files for one site
     """
-    check_hwsd_integrity(HWSD_DIR)
+    if not check_hwsd_integrity(HWSD_DIR):
+        return
+
     snglPntFlag = True
 
     slon = form.w_ur_lon.text()
