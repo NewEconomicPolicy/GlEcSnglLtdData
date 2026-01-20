@@ -18,7 +18,7 @@ __author__ = 's03mm5'
 from pyodbc import connect, drivers
 from os.path import join, isdir, isfile, split, splitext, exists, basename, splitdrive
 
-from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_conn, get_soil_recs, fetch_metadata
+from hwsd_bil_v2 import check_hwsd_integrity, HWSD_bil, fetch_accesss_conn, get_soil_recs, fetch_layers_and_smu_metadata
 
 HWSD_DIR = 'E:\\HWSD_V2'
 
@@ -67,12 +67,12 @@ def test_hwsd2_db(form):
     if cursor is None:
         return
 
-    recs_lyrs, recs_smu = fetch_metadata(cursor)
+    Nmd_tupe_smu, Nmd_tupe_lyrs = fetch_layers_and_smu_metadata(cursor)
 
     # create and instantiate a new class NB this stanza enables single site
     # ==================================
     form.hwsd_mu_globals = type('test', (), {})()
-    soil_recs = get_soil_recs(conn, cursor, mu_globals)
+    soil_recs = get_soil_recs(conn, cursor, mu_globals, Nmd_tupe_smu, Nmd_tupe_lyrs)
     if len(soil_recs) == 0:
         print('No soil data for this area\n')
     else:
