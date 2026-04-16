@@ -19,6 +19,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QPushButton, QCheckBox
 
 from initialise_sngl_funcs import write_study_definition_file, read_config_file, write_config_file
+
 STD_FLD_SIZE_60 = 60
 STD_FLD_SIZE_80 = 80
 STD_FLD_SIZE_100 = 100

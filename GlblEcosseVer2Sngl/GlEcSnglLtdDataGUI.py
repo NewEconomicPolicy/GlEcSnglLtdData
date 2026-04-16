@@ -12,7 +12,9 @@ __version__ = '0.0.1'
 __author__ = 's03mm5'
 
 import sys
-import os
+from os import system
+from os.path import normpath
+from glob import glob
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
@@ -29,6 +31,9 @@ from glbl_ecsse_wthr_only_sngl_fns import generate_weather_only, write_cnvrt_tif
 from orator_wthr import generate_orator_wthr
 from cvrtcoord import WGS84toOSGB36
 from hwsd2_test import test_hwsd2_db
+
+ERROR_STR = '*** Error *** '
+WARNING_STR = '*** Warning *** '
 
 STD_FLD_SIZE_60 = 60
 STD_FLD_SIZE_80 = 80
@@ -150,6 +155,23 @@ class Form(QWidget):
         irow += 1
         grid.addWidget(QLabel(''), irow, 1)     # spacer
 
+        # row 13
+        # ======
+        irow += 1
+        w_dir_tif = QPushButton("Tiff files dir")
+        w_dir_tif.setFixedWidth(STD_FLD_SIZE_100)
+        helpText = 'Select directory of tif files'
+        w_dir_tif.setToolTip(helpText)
+        grid.addWidget(w_dir_tif, irow, 0, alignment=Qt.AlignRight)
+        w_dir_tif.clicked.connect(self.fetchTiffDir)
+
+        w_dirnm_tif = QLabel('')
+        grid.addWidget(w_dirnm_tif, irow, 1, 1, 5)
+        self.w_dirnm_tif = w_dirnm_tif
+
+        irow += 1
+        grid.addWidget(QLabel(''), irow, 1)  # spacer
+
         # ====================
         irow = commonSection(self, grid, irow)
 
@@ -199,7 +221,7 @@ class Form(QWidget):
         helpText = 'Save configuration and study definition files'
         w_save.setToolTip(helpText)
         grid.addWidget(w_save, irow, 3)
-        w_save.clicked.connect(self.saveClicked)
+        w_save.clicked.connect(self.saveThisGuiClicked)
         w_save.setFixedWidth(80)
 
         w_cancel = QPushButton("Cancel")
@@ -212,7 +234,7 @@ class Form(QWidget):
         helpText = 'Close GUI - the configuration and study definition files will be saved'
         w_exit.setToolTip(helpText)
         grid.addWidget(w_exit, irow, 5)
-        w_exit.clicked.connect(self.exitClicked)
+        w_exit.clicked.connect(self.exitThisGuiClicked)
 
         # line 20
         # =======
@@ -267,6 +289,24 @@ class Form(QWidget):
         # ==================================
         read_config_file(self)
         self.combo10w.currentIndexChanged[str].connect(self.weatherResourceChanged)
+
+    def fetchTiffDir(self):
+        """
+
+        """
+        dirnm = self.w_dirnm_tif.text()
+        dirnm = QFileDialog.getExistingDirectory(self, 'Select directory', dirnm)
+        if dirnm != '':
+            dirnm = normpath(dirnm)
+            self.w_dirnm_tif.setText(dirnm)
+            tif_files = glob(dirnm + '\\*.tif')
+            nfiles = len(tif_files)
+            if nfiles == 0:
+                print(WARNING_STR + 'No tif files in ' + dirnm)
+                self.w_tif_to_nc.setEnabled(False)
+            else:
+                print(str(nfiles) + ' tif files in ' + dirnm)
+                self.w_tif_to_nc.setEnabled(True)
 
     def testHwsd2Clicked(self):
         """
@@ -413,7 +453,7 @@ class Form(QWidget):
             # run the make simulations script
             # ===============================
             cmd_str = self.python_exe + ' ' + self.runsites_py + ' ' + self.runsites_config_file
-            os.system(cmd_str)
+            system(cmd_str)
 
     def cancelClicked(self):
         """
@@ -421,7 +461,7 @@ class Form(QWidget):
         """
         exitClicked(self, write_config_flag=False)
 
-    def exitClicked(self):
+    def exitThisGuiClicked(self):
         """
         exit cleanly
         """
@@ -440,7 +480,7 @@ class Form(QWidget):
         # remove_project(self)
         print('TODO: Not yet activated')
 
-    def saveClicked(self):
+    def saveThisGuiClicked(self):
         """
         check for spaces
         """

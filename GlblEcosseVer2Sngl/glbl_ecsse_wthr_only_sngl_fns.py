@@ -41,8 +41,9 @@ def _write_cnvrt_fert_organic_N_tiffs_to_nc(form):
     requires gdal module from osgeo
     '''
     base_dir = 'F:\\SuperG_Mohamed\\not used\\fertiliser manure\\NFertilizer_europe_geotif'
-
     base_dir = 'F:\\SuperG_Mohamed\\staging_area_dsets\\N_from_livestock'
+
+    base_dir = form.w_dirnm_tif.text()
     out_dir = join(base_dir + '_outputs_nc')
 
     tif_files = glob(base_dir + '\\*.tif')

@@ -14,13 +14,18 @@ __version__ = '0.0.0'
 # Version history
 # ---------------
 # 
-from os.path import join, isfile, exists
+from os.path import join, isfile, exists, isdir
 import json
 from initialise_common_funcs import write_default_config_file, check_lu_pi_json_fname
 from shape_funcs import calculate_area
 from weather_datasets import change_weather_resource, record_weather_settings
 
+MINGUI_LIST = ['weatherResource', 'aveWthrFlag', 'bbox', 'luPiJsonFname', 'hwsdCsvFname', 'snglPntFlag',
+                                                                                'usePolyFlag', 'tifFileDir']
 BBOX_DEFAULT = [116.90045, 28.2294, 117.0, 29.0] # bounding box default - somewhere in SE Europe
+
+ERROR_STR = '*** Error *** '
+
 sleepTime = 5
 
 def read_config_file(form):
@@ -41,13 +46,12 @@ def read_config_file(form):
     else:
         config = write_default_config_file(config_file)
 
-    mingui_list = ['weatherResource', 'aveWthrFlag', 'bbox', 'luPiJsonFname', 'hwsdCsvFname']
     grp = 'minGUI'
-    for key in mingui_list:
+    for key in MINGUI_LIST:
         if key not in config[grp]:
             form.bbox = BBOX_DEFAULT
             form.csv_fname = ''
-            print('{}\tError in group: {}'.format(func_name, grp))
+            print(ERROR_STR + '{}\tKey must be in group: {}'.format(key, grp))
             return False
 
     # set check boxes
@@ -76,6 +80,15 @@ def read_config_file(form):
     lu_pi_json_fname = config[grp]['luPiJsonFname']
     form.w_lbl13.setText(lu_pi_json_fname)
     form.w_lbl14.setText(check_lu_pi_json_fname(form))  # displays file info
+
+    # tif file directory
+    # ==================
+    tif_file_dir = config[grp]['tifFileDir']
+    if isdir(tif_file_dir):
+        form.w_dirnm_tif.setText(tif_file_dir)
+        form.w_tif_to_nc.setEnabled(True)
+    else:
+        form.w_tif_to_nc.setEnabled(False)
 
     # common area
     # ===========
@@ -121,7 +134,7 @@ def read_config_file(form):
 
     return True
 
-def write_config_file(form, message_flag = True):
+def write_config_file(form, message_flag=True):
     """
     # write current selections to config file
     """
@@ -152,7 +165,6 @@ def write_config_file(form, message_flag = True):
     form.wthr_settings_prev[weather_resource] = record_weather_settings(scenario, hist_strt_year, hist_end_year,
                                                                                         sim_strt_year, sim_end_year)
     sngl_point_flag = True
-    hwsd_csv_fname  = ''
     grid_resol = ''
 
     config = {
@@ -163,6 +175,7 @@ def write_config_file(form, message_flag = True):
             'aveWthrFlag'  : form.w_ave_weather.isChecked(),
             'hwsdCsvFname' : form.w_lbl16.text(),           # use obsolete config setting for coords file
             'luPiJsonFname': form.w_lbl13.text(),
+            'tifFileDir': form.w_dirnm_tif.text(),
             'usePolyFlag'  : False
         },
         'cmnGUI': {
@@ -183,7 +196,6 @@ def write_config_file(form, message_flag = True):
     if study != '':
         with open(config_file, 'w') as fconfig:
             json.dump(config, fconfig, indent=2, sort_keys=True)
-            fconfig.close()
             if message_flag:
                 print('\n' + descriptor + ' configuration file ' + config_file)
             else:
