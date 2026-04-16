@@ -34,26 +34,32 @@ except ModuleNotFoundError as err:
     TRANS_FLAG = False
 
 METRICS = list(['precipitation', 'temperature'])
-WARNING_MESS = '*** Warning *** '
+WARNING_STR = '*** Warning *** '
 
 def _write_cnvrt_fert_organic_N_tiffs_to_nc(form):
     '''
     requires gdal module from osgeo
     '''
-    base_dir = 'E:\\SuperG_MA\\staging_area_dsets\\fertiliser_manure\\N available from cattle goats and sheep'
-    out_dir = 'E:\\SuperG_MA\\staging_area_dsets\\fertiliser_manure\\outputs_nc'
+    base_dir = 'F:\\SuperG_Mohamed\\not used\\fertiliser manure\\NFertilizer_europe_geotif'
 
-    base_dir = 'E:\\Mohamed\\datasets\\N_from_livestock'
-    out_dir = 'E:\\Mohamed\\datasets\\N_from_livestock\\outputs_nc'
+    base_dir = 'F:\\SuperG_Mohamed\\staging_area_dsets\\N_from_livestock'
+    out_dir = join(base_dir + '_outputs_nc')
 
-    for tif_fn in glob(base_dir + '\\*.tif'):
-        root_name = splitext(split(tif_fn)[1])[0]
-        nc_fn = join(out_dir, root_name + '.nc')
-        if isfile(nc_fn):
-            print(nc_fn + ' already exists')
-        else:
-            ds = Translate(nc_fn, tif_fn, format = 'NetCDF')
-            print('Read {}\twrote {}'.format(tif_fn, nc_fn))
+    tif_files = glob(base_dir + '\\*.tif')
+    if len(tif_files) == 0:
+        print(WARNING_STR + 'No tif files in ' + base_dir)
+    else:
+        if not isdir(out_dir):
+            makedirs(out_dir)
+
+        for tif_fn in tif_files:
+            root_name = splitext(split(tif_fn)[1])[0]
+            nc_fn = join(out_dir, root_name + '.nc')
+            if isfile(nc_fn):
+                print(nc_fn + ' already exists')
+            else:
+                print('Read {}\twriting {}'.format(tif_fn, nc_fn))
+                ds = Translate(nc_fn, tif_fn, format = 'NetCDF')
 
     return
 
@@ -64,7 +70,7 @@ def write_cnvrt_tiffs_to_nc_script(form):
     if TRANS_FLAG:
         _write_cnvrt_fert_organic_N_tiffs_to_nc(form)
     else:
-        mess = WARNING_MESS + 'this option requires the Translate function from the Geospatial Data'
+        mess = WARNING_STR + 'this option requires the Translate function from the Geospatial Data'
         mess += '\n\t\t\tAbstraction Library (gdal) package from the OGGeo library'
         print(mess)
 
