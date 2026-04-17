@@ -22,7 +22,7 @@ from shape_funcs import calculate_area
 from weather_datasets import change_weather_resource, record_weather_settings
 
 MINGUI_LIST = ['weatherResource', 'aveWthrFlag', 'bbox', 'luPiJsonFname', 'hwsdCsvFname', 'snglPntFlag',
-                                                                                'usePolyFlag', 'tifFileDir']
+                                                                    'usePolyFlag', 'tifFileDir', 'tifOutFileDir']
 BBOX_DEFAULT = [116.90045, 28.2294, 117.0, 29.0] # bounding box default - somewhere in SE Europe
 
 ERROR_STR = '*** Error *** '
@@ -50,6 +50,9 @@ def read_config_file(form):
     grp = 'minGUI'
     for key in MINGUI_LIST:
         if key not in config[grp]:
+            if key == 'tifOutFileDir':
+                config[grp]['tifOutFileDir'] = ''
+
             form.bbox = BBOX_DEFAULT
             form.csv_fname = ''
             print(ERROR_STR + '{}\tKey must be in group: {}'.format(key, grp))
