@@ -14,11 +14,14 @@ __version__ = '0.0.1'
 __author__ = 's03mm5'
 
 from os.path import normpath, isfile
+from glob import glob
 
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QPushButton, QCheckBox
+from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QPushButton, QCheckBox,  QFileDialog
 
 from initialise_sngl_funcs import write_study_definition_file, read_config_file, write_config_file
+
+WARNING_STR = '*** Warning *** '
 
 STD_FLD_SIZE_60 = 60
 STD_FLD_SIZE_80 = 80
@@ -208,6 +211,30 @@ def commonSection(form, grid, irow):
     form.w_lbl14 = w_lbl14
 
     return irow
+
+def post_tiff_dir_detail(form, fetch_dir_flag=False):
+    """
+    display tiff file directory and detail
+    """
+    dirnm = form.w_dirnm_tif.text()
+    if fetch_dir_flag:
+        dirnm = QFileDialog.getExistingDirectory(form, 'Select directory', dirnm)
+
+    nfiles = 0
+    if dirnm != '':
+        dirnm = normpath(dirnm)
+        form.w_dirnm_tif.setText(dirnm)
+        tif_files = glob(dirnm + '\\*.tif')
+        nfiles = len(tif_files)
+        if nfiles == 0:
+            form.w_tif_to_nc.setEnabled(False)
+        else:
+            form.w_tif_to_nc.setEnabled(True)
+
+    mess = 'N tif files: {:7s}'.format(format(nfiles, ','))
+    form.w_nfiles.setText(mess)
+
+    return
 
 def saveClicked(form):
     """

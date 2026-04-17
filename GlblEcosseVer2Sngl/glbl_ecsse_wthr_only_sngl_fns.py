@@ -53,14 +53,19 @@ def _write_cnvrt_fert_organic_N_tiffs_to_nc(form):
         if not isdir(out_dir):
             makedirs(out_dir)
 
+        ncmplt, nexist = 2*[0]
         for tif_fn in tif_files:
             root_name = splitext(split(tif_fn)[1])[0]
             nc_fn = join(out_dir, root_name + '.nc')
             if isfile(nc_fn):
                 print(nc_fn + ' already exists')
+                nexist += 1
             else:
                 print('Read {}\twriting {}'.format(tif_fn, nc_fn))
                 ds = Translate(nc_fn, tif_fn, format = 'NetCDF')
+                ncmplt += 1
+
+    print('Coversion complete, wrote {} NC files\t{} already exist'.format(ncmplt, nexist))
 
     return
 
