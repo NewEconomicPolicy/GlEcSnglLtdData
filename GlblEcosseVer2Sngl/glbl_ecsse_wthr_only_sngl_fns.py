@@ -37,22 +37,18 @@ METRICS = list(['precipitation', 'temperature'])
 WARNING_STR = '*** Warning *** '
 
 def _write_cnvrt_fert_organic_N_tiffs_to_nc(form):
-    '''
+    """
     requires gdal module from osgeo
-    '''
     base_dir = 'F:\\SuperG_Mohamed\\not used\\fertiliser manure\\NFertilizer_europe_geotif'
     base_dir = 'F:\\SuperG_Mohamed\\staging_area_dsets\\N_from_livestock'
-
+    """
     base_dir = form.w_dirnm_tif.text()
-    out_dir = join(base_dir + '_outputs_nc')
+    out_dir = form.w_out_dir.text()
 
     tif_files = glob(base_dir + '\\*.tif')
     if len(tif_files) == 0:
         print(WARNING_STR + 'No tif files in ' + base_dir)
     else:
-        if not isdir(out_dir):
-            makedirs(out_dir)
-
         ncmplt, nexist = 2*[0]
         for tif_fn in tif_files:
             root_name = splitext(split(tif_fn)[1])[0]
@@ -70,9 +66,9 @@ def _write_cnvrt_fert_organic_N_tiffs_to_nc(form):
     return
 
 def write_cnvrt_tiffs_to_nc_script(form):
-    '''
+    """
     called from GUI
-    '''
+    """
     if TRANS_FLAG:
         _write_cnvrt_fert_organic_N_tiffs_to_nc(form)
     else:
@@ -83,9 +79,9 @@ def write_cnvrt_tiffs_to_nc_script(form):
     return
 
 def generate_weather_only(form):
-    '''
+    """
     called from GUI
-    '''
+    """
     study = form.w_study.text()
     wthr_rsrc = form.combo10w.currentText()
 
@@ -189,9 +185,9 @@ def generate_weather_only(form):
     return
 
 class WthrCsvOutputs(object):
-    '''
+    """
     Class to write CSV results of a Spatial ECOSSE run
-    '''
+    """
     def __init__(self, form, climgen, study, lat_ur, lon_ur):
 
         self.lgr = form.lgr
@@ -205,9 +201,9 @@ class WthrCsvOutputs(object):
         self.sim_end_year = climgen.sim_end_year
 
     def create_results_file(self):
-        '''
+        """
         Create empty results files
-        '''
+        """
         size_current = csv.field_size_limit(131072*4)
 
         # file creation
@@ -232,9 +228,9 @@ class WthrCsvOutputs(object):
         print(mess)
 
     def write_results(self, climgen, pettmp):
-        '''
+        """
         Write data
-        '''
+        """
         precip = pettmp[METRICS[0]][0]
         tair = pettmp[METRICS[1]][0]
         year = climgen.sim_start_year

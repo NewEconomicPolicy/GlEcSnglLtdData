@@ -173,6 +173,20 @@ class Form(QWidget):
         grid.addWidget(w_nfiles, irow, 5)
         self.w_nfiles = w_nfiles
 
+        # Outputs directory
+        # =================
+        irow += 1
+        w_out_pb = QPushButton("Outputs dir")
+        w_out_pb.setFixedWidth(STD_FLD_SIZE_100)
+        helpText = 'Select directory for output files'
+        w_out_pb.setToolTip(helpText)
+        grid.addWidget(w_out_pb, irow, 0, alignment=Qt.AlignRight)
+        w_out_pb.clicked.connect(self.fetchOutDir)
+
+        w_out_dir = QLabel('')
+        grid.addWidget(w_out_dir, irow, 1, 1, 4)
+        self.w_out_dir = w_out_dir
+
         irow += 1
         grid.addWidget(QLabel(''), irow, 1)  # spacer
 
@@ -294,6 +308,15 @@ class Form(QWidget):
         read_config_file(self)
         self.combo10w.currentIndexChanged[str].connect(self.weatherResourceChanged)
         post_tiff_dir_detail(self)
+
+    def fetchOutDir(self):
+        """
+
+        """
+        dirnm = self.w_out_dir.text()
+        dirnm = QFileDialog.getExistingDirectory(self, 'Select directory', dirnm)
+        if dirnm != '':
+            self.w_out_dir.setText(dirnm)
 
     def fetchTiffDir(self):
         """

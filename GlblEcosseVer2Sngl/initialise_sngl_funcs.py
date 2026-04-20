@@ -22,7 +22,7 @@ from shape_funcs import calculate_area
 from weather_datasets import change_weather_resource, record_weather_settings
 
 MINGUI_LIST = ['weatherResource', 'aveWthrFlag', 'bbox', 'luPiJsonFname', 'hwsdCsvFname', 'snglPntFlag',
-                                                                    'usePolyFlag', 'tifFileDir', 'tifOutFileDir']
+                                                                    'usePolyFlag', 'tifFileDir', 'outFilesDir']
 BBOX_DEFAULT = [116.90045, 28.2294, 117.0, 29.0] # bounding box default - somewhere in SE Europe
 
 ERROR_STR = '*** Error *** '
@@ -50,8 +50,8 @@ def read_config_file(form):
     grp = 'minGUI'
     for key in MINGUI_LIST:
         if key not in config[grp]:
-            if key == 'tifOutFileDir':
-                config[grp]['tifOutFileDir'] = ''
+            if key == 'outFilesDir':
+                config[grp]['outFilesDir'] = ''
 
             form.bbox = BBOX_DEFAULT
             form.csv_fname = ''
@@ -93,6 +93,12 @@ def read_config_file(form):
         form.w_tif_to_nc.setEnabled(True)
     else:
         form.w_tif_to_nc.setEnabled(False)
+
+    # outputs directory
+    # =================
+    out_dir = config[grp]['outFilesDir']
+    if isdir(out_dir):
+        form.w_out_dir.setText(out_dir)
 
     # common area
     # ===========
@@ -180,6 +186,7 @@ def write_config_file(form, message_flag=True):
             'hwsdCsvFname' : form.w_lbl16.text(),           # use obsolete config setting for coords file
             'luPiJsonFname': form.w_lbl13.text(),
             'tifFileDir': form.w_dirnm_tif.text(),
+            'outFilesDir': form.w_out_dir.text(),
             'usePolyFlag'  : False
         },
         'cmnGUI': {
